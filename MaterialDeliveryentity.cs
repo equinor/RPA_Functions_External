@@ -346,7 +346,8 @@ namespace RPA_Azure_Func_External
                                                             'border': 'none'
                                                           });
                                             }
-                                            var apiurl = 'http://localhost:7071/api/PC243_PostMaterialDeliveryUpdate/';
+                                            
+                                            var apiurl = 'https://rpa-api-ext.azurewebsites.net/api/PC243_PostMaterialDeliveryUpdate/';
                                             var materialDeliveryData = {
                                               'delivered_ondate': '',
                                               'new_delivery_date': '',
