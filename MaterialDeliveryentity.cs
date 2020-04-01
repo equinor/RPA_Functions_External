@@ -11,8 +11,20 @@ namespace RPA_Azure_Func_External
         public static string GetPage(List<MaterialDeliveryTableEntity> materialDeliveriesTable)
         {
             List<MaterialDeliveryEntity> materialDeliveries = Mappings.toMaterialDeliveryEntityList(materialDeliveriesTable);
+            string htmlHead;
+            try
+            {
+                htmlHead = gethtmlhead(materialDeliveries[0].vendor_name, materialDeliveries[0].webguid);
 
-            string htmlHead = gethtmlhead(materialDeliveries[0].vendor_name, materialDeliveries[0].webguid);
+            }
+            catch (Exception)
+            {
+
+                htmlHead = null;
+                return htmlHead;
+            }
+         
+            
             string htmlTable = "";
 
             foreach (MaterialDeliveryEntity ent in materialDeliveries)
