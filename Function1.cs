@@ -22,7 +22,7 @@ namespace RPA_Azure_Func_External
         // Will be called by the Customer WWW Interface (EXPOSED TO INTERNET)
         [FunctionName("PC243_GetMaterialDelivery")]
         public HttpResponseMessage GetMaterialDelivery(
-           [HttpTrigger(AuthorizationLevel.Function, "get", Route = "PC243_MaterialDelivery/{webid}")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "PC243_MaterialDelivery/{webid}")] HttpRequest req,
            ILogger log, string webid)
         {
             log.LogInformation("PC243 Get task trigged");
@@ -48,7 +48,7 @@ namespace RPA_Azure_Func_External
         // Will be called by the Customer WWW Interface (EXPOSED TO INTERNET)
         [FunctionName("PC243_PostMaterialDeliveryUpdate")]
         public async Task<IActionResult> PostMaterialDeliveryUpdate(
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "PC243_PostMaterialDeliveryUpdate/{webid}/{guid}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "PC243_PostMaterialDeliveryUpdate/{webid}/{guid}")] HttpRequest req,
             string webid,
             string guid,
             ILogger log)
