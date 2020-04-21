@@ -51,7 +51,7 @@ namespace RPA_Azure_Func_External
                                     </label>
                                     </td>
                                     <td>
-                                    <input class=deliverydate name=deliverydate_{ent.id} type=date id=deliverydate_{ent.id} disabled=true>
+                                    <input class=deliverydate name=deliverydate_{ent.id} type=date id=deliverydate_{ent.id} disabled=true onchange='enableSubmitWhenDateSelected(id)'> 
                                     </td>
                                     <td>
                                     <input class=trackingnr name=trackingnr_{ent.id} input=text id=trackingnr_{ent.id} placeholder = ""Type the value"">
