@@ -270,8 +270,16 @@ namespace RPA_Azure_Func_External
                                                 $('#trackingnr_' + id).prop('disabled', false);
                                                 $('#freight_' + id).prop('disabled', false);
                                                 $('#deliverydate_' + id).prop('disabled', false);
+                                                disableSubmit(id);
                                               }
                                             });
+                                            function enableSubmitWhenDateSelected(id) {
+                                                id = id.split('_')[1];
+                                                $('#button_' + id).prop('disabled', false);
+                                                $('#button_' + id).css({
+                                                    'background': '#1C6EA4'
+                                                });
+                                            }
                                             $('#buttonsubmitall').click(function() {
                 
                                                 var tableRows = $('table')[0].rows;
@@ -393,7 +401,6 @@ namespace RPA_Azure_Func_External
                                                 }
                                               });
                                             }
-
                                           </script>
                                           </body>
                                           </html>";
