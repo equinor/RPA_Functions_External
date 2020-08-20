@@ -82,6 +82,24 @@ namespace RPA_Azure_Func_External
                             <head>
                             <title>Equinor Material Delivery feedback</title> 
                             <script src=https://code.jquery.com/jquery-3.4.1.js integrity=sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU= crossorigin=anonymous></script>
+                            <noscript>
+                                <h2 id='noscript-heading'>Javascript for this site is disabled!
+                                <br>
+                                Please enable Javascript to view the content and refresh the page</h2>
+                                <p>Please see instructions on how to enable Javascript in your browser 
+                                    <a href = 'https://www.whatismybrowser.com/guides/how-to-enable-javascript/' target = '_blank'>here</a>
+                                </p>
+                                <style>
+                                    #main-content {{ 
+                                        display:none;
+                                    }}
+    
+                                    #noscript-heading {{
+                                        padding: 3px 6px;
+                                        color: #1C6EA4;
+                                    }}
+                                </style>
+                            </noscript>
                             <style>
                                 
                                 h3, p {{
@@ -225,6 +243,7 @@ namespace RPA_Azure_Func_External
                             </style>
                             </head>
                             <body>
+                            <div id='main-content'>
                             <h3>{vendor_name}</h3>
                             <input type=hidden id=webid value={webguid}>
                             <br>
@@ -402,6 +421,7 @@ namespace RPA_Azure_Func_External
                                               });
                                             }
                                           </script>
+                                          </div>
                                           </body>
                                           </html>";
     }
