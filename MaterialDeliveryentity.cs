@@ -23,8 +23,8 @@ namespace RPA_Azure_Func_External
                 htmlHead = null;
                 return htmlHead;
             }
-         
-            
+
+
             string htmlTable = "";
 
             foreach (MaterialDeliveryEntity ent in materialDeliveries)
@@ -240,6 +240,13 @@ namespace RPA_Azure_Func_External
                                     text-align: center;
                                     
                                 }}
+                                .trackingnr {{
+                                    background-color: FDFEFF;
+                                }}
+                                .freight {{
+                                    background-color: FDFEFF;
+                                }}
+
                             </style>
                             </head>
                             <body>
@@ -278,6 +285,22 @@ namespace RPA_Azure_Func_External
                                             <button class=buttonsubmitall id=buttonsubmitall type=button>Submit All</button>
                                           </div>
                                           <script>
+                                          //If using IE browser
+
+                                          if((navigator.userAgent.indexOf(""MSIE"") != -1 ) || (!!document.documentMode == true )) {
+                                            alert('You are using IE browser. Please open this page in Chrome or Edge browser to ensure all functionality is available.');
+                                            disableSubmitAll();
+
+                                            var tableRows = $('table')[0].rows;
+                                                
+                                                for (i = 2; i < tableRows.length; i++) {
+                                                    var id = tableRows[i].cells[13].childNodes[1].id.split('_')[1];
+                                                    //Disable Each Submit Button
+                                                        disableSubmit(id);
+                                                }
+                                            
+                                          }
+
                                             $('.delivery').click(function() {
                                               var id = this.id.split('_')[2];
                                               var action = this.id.split('_')[1];
@@ -285,18 +308,41 @@ namespace RPA_Azure_Func_External
                                                 $('#trackingnr_' + id).prop('disabled', false);
                                                 $('#freight_' + id).prop('disabled', false);
                                                 $('#deliverydate_' + id).prop('disabled', true);
+                                                $('#deliverydate_' + id).css({
+                                                    'background-color': '#EEEEEE'
+                                                });
+
                                               } else if (action == 'no') {
                                                 $('#trackingnr_' + id).prop('disabled', false);
                                                 $('#freight_' + id).prop('disabled', false);
                                                 $('#deliverydate_' + id).prop('disabled', false);
+                                                $('[type=""date""]').prop('min', function(){
+                                                    return new Date().toJSON().split('T')[0];
+                                                });
+                                                $('#deliverydate_' + id).css({
+                                                    'background-color': '#FDFEFF'
+                                                });
+                                                $('#trackingnr_' + id).css ({
+                                                    'background-color': '#EEEEEE'
+                                                });
+                                                $('#freight_' + id).css ({
+                                                    'background-color': '#EEEEEE'
+                                                });
                                                 disableSubmit(id);
                                               }
                                             });
+
                                             function enableSubmitWhenDateSelected(id) {
                                                 id = id.split('_')[1];
                                                 $('#button_' + id).prop('disabled', false);
                                                 $('#button_' + id).css({
                                                     'background': '#1C6EA4'
+                                                });
+                                                $('#trackingnr_' + id).css ({
+                                                    'background-color': '#FDFEFF'
+                                                });
+                                                $('#freight_' + id).css ({
+                                                    'background-color': '#FDFEFF'
                                                 });
                                             }
                                             $('#buttonsubmitall').click(function() {
