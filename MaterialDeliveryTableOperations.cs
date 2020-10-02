@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 
 namespace RPA_Azure_Func_External
@@ -24,10 +25,11 @@ namespace RPA_Azure_Func_External
                 string guidFilter = TableQuery.GenerateFilterCondition(MaterialDeliveryConstants.WEBID_FIELD_NAME, QueryComparisons.Equal, webid);
                 string statusFilter = TableQuery.GenerateFilterConditionForInt(MaterialDeliveryConstants.STATUS_FIELD_NAME, QueryComparisons.Equal, MaterialDeliveryConstants.STATUS_WAITING);
 
-                List<MaterialDeliveryTableEntity> queryResult = await table.RetrieveEntitiesCombinedFilter<MaterialDeliveryTableEntity>(guidFilter,
-                                                                                                                                    TableOperators.And,
-                                                                                                                                    statusFilter,
-                                                                                                                                    tableName);
+                List<MaterialDeliveryTableEntity> queryResult = await table.RetrieveEntitiesCombinedFilter<MaterialDeliveryTableEntity>(guidFilter, TableOperators.And, statusFilter, tableName);
+
+
+                queryResult = queryResult.OrderBy(x => Convert.ToInt32(x.item)).ToList();
+
 
                 return queryResult;
 
