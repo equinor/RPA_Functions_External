@@ -23,8 +23,8 @@ namespace RPA_Azure_Func_External
                 htmlHead = null;
                 return htmlHead;
             }
-         
-            
+
+
             string htmlTable = "";
 
             foreach (MaterialDeliveryEntity ent in materialDeliveries)
@@ -82,6 +82,24 @@ namespace RPA_Azure_Func_External
                             <head>
                             <title>Equinor Material Delivery feedback</title> 
                             <script src=https://code.jquery.com/jquery-3.4.1.js integrity=sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU= crossorigin=anonymous></script>
+                            <noscript>
+                                <h2 id='noscript-heading'>Javascript for this site is disabled!
+                                <br>
+                                Please enable Javascript to view the content and refresh the page</h2>
+                                <p>Please see instructions on how to enable Javascript in your browser 
+                                    <a href = 'https://www.whatismybrowser.com/guides/how-to-enable-javascript/' target = '_blank'>here</a>
+                                </p>
+                                <style>
+                                    #main-content {{ 
+                                        display:none;
+                                    }}
+    
+                                    #noscript-heading {{
+                                        padding: 3px 6px;
+                                        color: #1C6EA4;
+                                    }}
+                                </style>
+                            </noscript>
                             <style>
                                 
                                 h3, p {{
@@ -222,9 +240,17 @@ namespace RPA_Azure_Func_External
                                     text-align: center;
                                     
                                 }}
+                                .trackingnr {{
+                                    background-color: FDFEFF;
+                                }}
+                                .freight {{
+                                    background-color: FDFEFF;
+                                }}
+
                             </style>
                             </head>
                             <body>
+                            <div id='main-content'>
                             <h3>{vendor_name}</h3>
                             <input type=hidden id=webid value={webguid}>
                             <br>
@@ -259,6 +285,22 @@ namespace RPA_Azure_Func_External
                                             <button class=buttonsubmitall id=buttonsubmitall type=button>Submit All</button>
                                           </div>
                                           <script>
+                                          //If using IE browser
+
+                                          if((navigator.userAgent.indexOf(""MSIE"") != -1 ) || (!!document.documentMode == true )) {
+                                            alert('You are using IE browser. Please open this page in Chrome or Edge browser to ensure all functionality is available.');
+                                            disableSubmitAll();
+
+                                            var tableRows = $('table')[0].rows;
+                                                
+                                                for (i = 2; i < tableRows.length; i++) {
+                                                    var id = tableRows[i].cells[13].childNodes[1].id.split('_')[1];
+                                                    //Disable Each Submit Button
+                                                        disableSubmit(id);
+                                                }
+                                            
+                                          }
+
                                             $('.delivery').click(function() {
                                               var id = this.id.split('_')[2];
                                               var action = this.id.split('_')[1];
@@ -266,25 +308,48 @@ namespace RPA_Azure_Func_External
                                                 $('#trackingnr_' + id).prop('disabled', false);
                                                 $('#freight_' + id).prop('disabled', false);
                                                 $('#deliverydate_' + id).prop('disabled', true);
+                                                $('#deliverydate_' + id).css({
+                                                    'background-color': '#EEEEEE'
+                                                });
+
                                               } else if (action == 'no') {
                                                 $('#trackingnr_' + id).prop('disabled', false);
                                                 $('#freight_' + id).prop('disabled', false);
                                                 $('#deliverydate_' + id).prop('disabled', false);
+                                                $('[type=""date""]').prop('min', function(){
+                                                    return new Date().toJSON().split('T')[0];
+                                                });
+                                                $('#deliverydate_' + id).css({
+                                                    'background-color': '#FDFEFF'
+                                                });
+                                                $('#trackingnr_' + id).css ({
+                                                    'background-color': '#EEEEEE'
+                                                });
+                                                $('#freight_' + id).css ({
+                                                    'background-color': '#EEEEEE'
+                                                });
                                                 disableSubmit(id);
                                               }
                                             });
+
                                             function enableSubmitWhenDateSelected(id) {
                                                 id = id.split('_')[1];
                                                 $('#button_' + id).prop('disabled', false);
                                                 $('#button_' + id).css({
                                                     'background': '#1C6EA4'
                                                 });
+                                                $('#trackingnr_' + id).css ({
+                                                    'background-color': '#FDFEFF'
+                                                });
+                                                $('#freight_' + id).css ({
+                                                    'background-color': '#FDFEFF'
+                                                });
                                             }
                                             $('#buttonsubmitall').click(function() {
                 
                                                 var tableRows = $('table')[0].rows;
                                                 //var dateRegExp = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
-                                                var dateRegExp = /^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
+                                                var dateRegExp = /^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
                                                 for (i = 2; i < tableRows.length; i++) {
                                                     var id = tableRows[i].cells[13].childNodes[1].id.split('_')[1];
                                                     //Disable Each Submit Button
@@ -320,7 +385,7 @@ namespace RPA_Azure_Func_External
                                               disableSubmitAll();
                                               var id = this.id.split('_')[1];
                                               //var dateRegExp = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
-                                              var dateRegExp = /^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
+                                              var dateRegExp = /^(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d|([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
                                               //alert(dateRegExp.test('22/01/1981'));
                                               if ($('#delivery_no_' + id).prop('checked')) {
                                                 var deliveryDate = $('#deliverydate_' + id).val();
@@ -402,6 +467,7 @@ namespace RPA_Azure_Func_External
                                               });
                                             }
                                           </script>
+                                          </div>
                                           </body>
                                           </html>";
     }
