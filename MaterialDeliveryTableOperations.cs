@@ -28,7 +28,7 @@ namespace RPA_Azure_Func_External
                 List<MaterialDeliveryTableEntity> queryResult = await table.RetrieveEntitiesCombinedFilter<MaterialDeliveryTableEntity>(guidFilter, TableOperators.And, statusFilter, tableName);
 
 
-                queryResult = queryResult.OrderBy(x => Convert.ToInt32(x.item)).ToList();
+                queryResult = queryResult.OrderBy(x => Convert.ToInt64(x.po)).ThenBy(x => Convert.ToInt32(x.item)).ToList();
 
 
                 return queryResult;
